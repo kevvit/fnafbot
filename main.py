@@ -1,39 +1,22 @@
-import sys, time, keyboard
+import keyboard
+import time
 import pyautogui as pag
-import cv2
-import requests
-url = "https://discord.com/api/webhooks/1065789001052729515/IGrZS24YS9GISq-hQYhaQFUzdecgYgCg8B4JR1zSJWz9PSYPHU6zqtOPpdVfSvZ5WcRa"
-from PIL import Image
-print(pag.FAILSAFE)
-# try:
-#     while True:
-#         time.sleep(1)
-#
-#         x, y = pag.position()
-#         position = 'X: ' + str(x).rjust(4) + ' Y: ' + str(y).rjust(4)
-#         print(position + "\n", end="")
+
+print(pag.FAILSAFE)  # Make sure failsafe is on
+"""
+USE THIS TO PRINT COORDS OF MOUSE
+try:
+     while True:
+        time.sleep(1)
+
+        x, y = pag.position()
+        position = 'X: ' + str(x).rjust(4) + ' Y: ' + str(y).rjust(4)
+        print(position + "\n", end="")
 #         if keyboard.is_pressed('q'):
 #             break
-# except KeyboardInterrupt:
-#     print("\n")
-# except pag.FailSafeException:
-#     print("\n")
-
-# res = pyautogui .locateOnScreen("edit.png")
-# print(res)
-# while not keyboard.is_pressed('q'):
-#     res = pag.locateCenterOnScreen("search.png")
-#     # print(res)
-#     if res is not None:
-#         time.sleep(0.5)
-#         print('searching\n')
-#         pag.moveTo(res)
-#         pag.click()
-#         pag.write('itskevers')
-#         pag.hotkey("enter")
-#         res = Nonec
-#         break
-
+except KeyboardInterrupt:
+     print("\n")
+"""
 
 """
 FNAF coords:
@@ -47,7 +30,7 @@ Regular screen res is 1920 x 1080
 """
 BONNIE = 1
 CHICA = 0
-facingLeft = False
+facingLeft = True
 bonnie = False
 chica = False
 eyes = False
@@ -57,8 +40,6 @@ def toggleCam():
     pag.moveTo(640, 640)
     pag.moveTo(640, 670, 0.1)
     pag.moveTo(640, 640, 0.1)
-    global facingCenter
-    facingCenter = True
 
 def pirateCove():
     # Switch to pirate's cove
@@ -115,71 +96,57 @@ def rightLightOff():
 def checkTronic(tronic):
     # Check if tronic is at door.
     # Double checks and lower confidence compensate for flashing lights or errors
-    #timeout_start = time.time()
-    #timeout = 0.25
-    #time.sleep(0.25)
     if tronic:
         global bonnie
-        #while time.time() < timeout + timeout_start:
         if bonnie:  # If Bonnie is already there before, check if still there
-            bonnieAtDoor = pag.locateOnScreen("bonnieOutside.png", grayscale=True, confidence=0.8) is not None
-            if not bonnieAtDoor:
+            while True:
                 bonnieAtDoor = pag.locateOnScreen("bonnieOutside.png", grayscale=True, confidence=0.8) is not None
+                if not bonnieAtDoor:
+                    bonnieAtDoor = pag.locateOnScreen("bonnieOutside.png", grayscale=True, confidence=0.8) is not None
+                    if not bonnieAtDoor:
+                        break
+                leftlightOff()
+                time.sleep(0.2)
+                leftLightOn()
+                time.sleep(0.1)
 
         else:  # Check if Bonnie has just arrived at the door
-            bonnieAtDoor = pag.locateOnScreen("bonnieAtDoor.png", grayscale=True, confidence=0.8) is not None
+            bonnieAtDoor = pag.locateOnScreen("bonnieAtDoor.png", grayscale=True, confidence=0.6) is not None
             if not bonnieAtDoor:
-                bonnieAtDoor = pag.locateOnScreen("bonnieAtDoor.png", grayscale=True, confidence=0.8) is not None
+                bonnieAtDoor = pag.locateOnScreen("bonnieAtDoor.png", grayscale=True, confidence=0.6) is not None
         bonnie = bonnieAtDoor
-        #print("check")
         return bonnieAtDoor
-        #if bonnieAtDoor:
-                #data = {"content": 'Found Bonnie!'}
-                #response = requests.post(url, json=data)
-        #    return True
-
-        #data = {"content": 'Did not find Bonnie'}
-        #response = requests.post(url, json=data)
-        #print("done")
-        #return False
     else:
         global chica
-        #while time.time() < timeout + timeout_start:
-        if chica: # If Chica is already there before, check if still there
-            chicaAtDoor = pag.locateOnScreen("chicaGone.png", grayscale=True, confidence=0.8) is None
-            if chicaAtDoor:
-                chicaAtDoor = pag.locateOnScreen("chicaGone.png", grayscale=True, confidence=0.9) is None
+        if chica:  # If Chica is already there before, check if still there
+            while True:
+                chicaAtDoor = pag.locateOnScreen("chicaAtDoor.png", grayscale=True, confidence=0.6) is not None  # True is STILL THERE
+                if not chicaAtDoor:
+                    chicaAtDoor = pag.locateOnScreen("chicaAtDoor.png", grayscale=True, confidence=0.5) is not None
+                    if not chicaAtDoor:
+                        break
+                rightLightOff()
+                time.sleep(0.2)
+                rightLightOn()
         else:  # Check if Chica has just arrived at the door
-            chicaAtDoor = pag.locateOnScreen("chicaAtDoor.png", grayscale=True, confidence=0.8) is not None
+            chicaAtDoor = pag.locateOnScreen("chicaAtDoor.png", grayscale=True, confidence=0.6) is not None
             if not chicaAtDoor:
-                chicaAtDoor = pag.locateOnScreen("chicaAtDoor.png", grayscale=True, confidence=0.9) is not None
+                chicaAtDoor = pag.locateOnScreen("chicaAtDoor.png", grayscale=True, confidence=0.6) is not None
         chica = chicaAtDoor
         time.sleep(0.1)  # Delay, the game doesn't like responses too fast for right door
         return chicaAtDoor
-        #if chicaAtDoor:
-                #data = {"content": 'Found Chica!'}
-                #response = requests.post(url, json=data)
-        #    return True
-
-        #data = {"content": 'Did not find Chica'}
-        #response = requests.post(url, json=data)
-        #return False
 
 
 def checkBonnie():
     leftLightOn()
     if bonnie != checkTronic(BONNIE):
         leftDoor()
-    #elif bonnie != checkTronic(BONNIE):
-     #   leftDoor()
     leftlightOff()
 
 def checkChica():
     rightLightOn()
     if chica != checkTronic(CHICA):
         rightDoor()
-    #elif chica != checkTronic(CHICA):
-     #   rightDoor()
     rightLightOff()
 
 def checkFoxy():
@@ -189,14 +156,12 @@ def checkFoxy():
         # Check if Foxy is gone, after already seeing his second stage
         if pag.locateOnScreen("foxyEye.png", grayscale=True, confidence=0.6) is None:
             if pag.locateOnScreen("foxyEye.png", grayscale=True, confidence=0.6) is None:
-                print("found foxy")
                 eyes = False
                 return True
     else:
         # Check for Foxy's second stage, one before he's gone
-        if pag.locateOnScreen("foxyEye.png", grayscale=True, confidence=0.7) is None:
-            if pag.locateOnScreen("foxyEye.png", grayscale=True, confidence=0.7) is not None:
-                print("found eyes")
+        if pag.locateOnScreen("foxyEye.png", grayscale=True, confidence=0.6) is not None:
+            if pag.locateOnScreen("foxyEye.png", grayscale=True, confidence=0.5) is not None:
                 eyes = True
     return False
 
@@ -208,42 +173,84 @@ def stopFoxy():
 # Bot plays
 def autoPlay():
     global bonnie
+    global chica
+    global eyes
+    stopped = False
+    while True:
+        bonnie = False
+        chica = False
+        eyes = False
+        pag.moveTo(312, 631)  # Custom night button
+        pag.click()
+        time.sleep(2)
+        pag.moveTo(1140, 656)  # Ready button
+        pag.click()
+        time.sleep(9)  # Wait for game to load
+        # Stalling at the beginning
+        time.sleep(3)
+        lookRight()
+        toggleCam()  # up
+        time.sleep(0.3)
+        pirateCove()
+        time.sleep(0.3)
+        toggleCam()  # down
+        time.sleep(3)
+        toggleCam()  # up
+        time.sleep(0.3)
+        toggleCam()  # down
+        time.sleep(3)
+        toggleCam()  # up
+        time.sleep(0.3)
+        toggleCam()  # down
+        time.sleep(3)
+        toggleCam()  # up
+        time.sleep(0.3)
+        toggleCam()  # down
+        time.sleep(3)
 
-    # Stalling at the beginning
-    toggleCam()  # up
-    time.sleep(0.3)
-    pirateCove()
-    time.sleep(0.3)
-    toggleCam()  # down
-    time.sleep(3)
-    toggleCam()  # up
-    time.sleep(0.3)
-    toggleCam()  # down
-    time.sleep(3)
-    toggleCam()  # up
-    time.sleep(0.3)
-    toggleCam()  # down
-
-    while not keyboard.is_pressed('x'):  # Change to while not seeing 5% power
-        if not chica:
-            rightDoor()
-
-        toggleCam()
-        time.sleep(0.6)
-        # If Foxy left cove, change to west hall and close left door (if open)
-        if checkFoxy():
-            stopFoxy()
-            toggleCam()
-            if not bonnie:
-                leftDoor()
-                bonnie = True
-        else:
-            toggleCam()
+        timeout = 435  # 7 min 15 s
+        start = time.time()
+        while time.time() < start + timeout:
             if not chica:
                 rightDoor()
-            checkChica()
-        checkBonnie()
-        time.sleep(0.5)
+                if stopped:  # If foxy attacked, check Chica
+                    chica = True
+                    stopped = False
+            toggleCam()
+            time.sleep(0.4)
+            # If Foxy left cove, change to west hall and close left door (if open)
+            if checkFoxy():
+                stopFoxy()
+                toggleCam()
+                if not chica:
+                    rightDoor()
+                    stopped = True
+                if not bonnie:
+                    leftDoor()
+                    bonnie = True
+                time.sleep(0.5)
+            else:
+                toggleCam()
+                if not chica:
+                    rightDoor()
+                checkChica()
+            checkBonnie()
+            if not bonnie:
+                time.sleep(0.6)
+            if pag.locateOnScreen("stars.png", grayscale=True, confidence=0.5) is not None:  # We are on the title screen
+                break
+        # Stop everything
+        time.sleep(0.1)
+        if bonnie:
+            leftDoor()
+        if chica:
+            leftDoor()
+        # Restart game
+        while True:
+            if pag.locateOnScreen("stars.png", grayscale=True, confidence=0.5) is not None:  # We are on the title screen
+                break
+            time.sleep(3)
+        # time.sleep(130)  # 130 + 430 is 9min 20s. Wait until game is definitely over
 
 
 # Other controls for playing/testing
@@ -269,4 +276,17 @@ while not keyboard.is_pressed('x'):
             print("found")
         else:
             print("not found")
-
+    if keyboard.is_pressed("p"):
+        rightDoor()
+        leftDoor()
+        toggleCam()
+        west = True
+        while pag.locateOnScreen("5Left.png", confidence=0.4) is None:
+            if west:
+                westHall()
+                west = False
+            else:
+                pirateCove()
+                west = True
+            time.sleep(1)
+        print("5 is left")
