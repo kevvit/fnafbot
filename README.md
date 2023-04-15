@@ -1,10 +1,9 @@
 # fnafbot
 A computer bot programmed to complete a difficult level in the video game Five Nights at Freddy's
 
-*You will need to install the following libraries:*
-
-pip install keyboard
-pip install pyautogui
+*You will need to install the following libraries:*  
+pip install keyboard  
+pip install pyautogui  
 
 Run the code and switch to the game. Pressing the 'o' key on the keyboard while on the title screen will start night 7, if unlocked (but not set the AI levels. You need to do that on the first run). After that, it should keep trying to beat the game. It does not stop if it successfully beats the game.
 
