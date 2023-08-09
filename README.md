@@ -11,4 +11,5 @@ The PyAutoGUI failsafe is moving the mouse to the corner of the screen, which ex
 
 Code may need to be tweaked based on system.
 
-youtube.com/@itskevers
+Demo + Explanation can be found here:
+https://www.youtube.com/watch?v=4cMgEk1Vz5I&t=909s
